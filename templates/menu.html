@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Menu Makanan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background-color: #fdfdfd;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: #eee;
+    }
+
+    header {
+      background-color: #222;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    body.dark header {
+      background-color: #111;
+    }
+
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    body.dark nav a {
+      color: #ccc;
+    }
+
+    .dark-toggle {
+      margin-left: 20px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+      font-size: 14px;
+    }
+
+    .hero-title {
+      text-align: center;
+      font-size: 28px;
+      margin: 30px 0 10px;
+    }
+
+    .kategori {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .kategori button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: none;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+    }
+
+    body.dark .kategori button {
+      background-color: #555;
+    }
+
+    .menu-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: 230px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    body.dark .card {
+      background-color: #1e1e1e;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 12px;
+    }
+
+    .card-body h4 {
+      margin: 0 0 8px;
+    }
+
+    .card-body p {
+      color: #e67e22;
+      margin-bottom: 8px;
+    }
+
+    .card-body input {
+      width: 60px;
+      padding: 5px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .card-body button {
+      padding: 6px 14px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .keranjang {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    body.dark .keranjang {
+      background-color: #1f1f1f;
+    }
+
+    .keranjang h3 {
+      margin-top: 0;
+    }
+
+    .keranjang-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    body.dark .keranjang-item {
+      border-color: #444;
+    }
+
+    .kirim-btn {
+      margin-top: 15px;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BURGERIJ - Menu</h1>
+    <nav>
+      <a href="/">BERANDA</a>
+      <a href="/riwayat_pesanan">RIWAYAT</a>
+      <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+    </nav>
+  </header>
+
+  <h2 class="hero-title">Pesan Makanan Favoritmu</h2>
+
+  <div class="kategori">
+    <button onclick="filterMenu('all')">Semua</button>
+    <button onclick="filterMenu('Makanan')">Makanan</button>
+    <button onclick="filterMenu('Minuman')">Minuman</button>
+  </div>
+
+  <div class="menu-grid" id="menuContainer">
+    {% for item in menu %}
+    <div class="card" data-kategori="{{ item.kategori }}">
+      <img src="{{ item.gambar }}" alt="{{ item.nama }}">
+      <div class="card-body">
+        <h4>{{ item.nama }}</h4>
+        <p>Rp {{ '{:,.0f}'.format(item.harga) }}</p>
+        <input type="number" min="1" value="1" id="qty-{{ loop.index }}">
+        <button onclick="tambahKeKeranjang('{{ item.nama }}', {{ item.harga }}, 'qty-{{ loop.index }}')">Pesan</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="keranjang" id="keranjang">
+    <h3>Keranjang Pesanan</h3>
+    <div id="listKeranjang"></div>
+    <button class="kirim-btn" onclick="kirimPesanan()">Kirim Pesanan</button>
+  </div>
+
+  <script>
+    let keranjang = [];
+
+    function tambahKeKeranjang(nama, harga, qtyId) {
+      const jumlah = parseInt(document.getElementById(qtyId).value);
+      if (jumlah <= 0) return;
+
+      const existing = keranjang.find(item => item.nama === nama);
+      if (existing) {
+        existing.jumlah += jumlah;
+      } else {
+        keranjang.push({ nama, harga, jumlah });
+      }
+
+      renderKeranjang();
+    }
+
+    function renderKeranjang() {
+      const list = document.getElementById('listKeranjang');
+      list.innerHTML = "";
+      keranjang.forEach(item => {
+        const subtotal = item.harga * item.jumlah;
+        list.innerHTML += `<div class="keranjang-item"><span>${item.nama} x${item.jumlah}</span><span>Rp ${subtotal.toLocaleString()}</span></div>`;
+      });
+    }
+
+    function kirimPesanan() {
+      if (keranjang.length === 0) {
+        alert("Keranjang kosong!");
+        return;
+      }
+
+      fetch('/api/pesan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pesanan: keranjang })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        keranjang = [];
+        renderKeranjang();
+      });
+    }
+
+    function filterMenu(kategori) {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const itemKategori = card.dataset.kategori;
+        card.style.display = (kategori === 'all' || itemKategori === kategori) ? 'block' : 'none';
+      });
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      body.classList.toggle('dark');
+      localStorage.setItem("darkMode", body.classList.contains("dark"));
+    }
+
+    window.onload = function () {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+      }
+    };
+  </script>
+</body>
+</html>

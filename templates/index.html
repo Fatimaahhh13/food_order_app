@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Food Order App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>BURGERIJ - Beranda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
       background-color: #fdfdfd;
       color: #333;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     header {
@@ -21,12 +22,6 @@
       color: #fff;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 26px;
-      letter-spacing: 2px;
-    }
-
     nav a {
       color: #fff;
       margin-left: 20px;
@@ -34,83 +29,148 @@
       font-weight: 500;
     }
 
+    .dark-toggle {
+      margin-left: 20px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .dark-toggle:hover {
+      background-color: #666;
+    }
+
     .hero {
+      height: 90vh;
       background: url('{{ url_for("static", filename="images/bg.jpg") }}') center/cover no-repeat;
-      height: 60vh;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       text-align: center;
       color: white;
+      padding: 0 20px;
     }
 
     .hero h2 {
       font-size: 40px;
-      background-color: rgba(0,0,0,0.5);
-      padding: 10px 30px;
-      border-radius: 10px;
+      margin-bottom: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 15px 30px;
+      border-radius: 12px;
     }
 
-    .kategori {
-      text-align: center;
-      margin: 30px;
-    }
-
-    .kategori button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      border-radius: 20px;
-      background-color: #444;
+    .hero a {
+      background-color: #e67e22;
       color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
       transition: background 0.3s;
     }
 
-    .kategori button:hover {
-      background-color: #888;
+    .hero a:hover {
+      background-color: #cf6b17;
     }
 
-    .menu-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      padding: 30px;
-    }
-
-    .card {
+    .promo-section {
+      padding: 50px 20px;
       background-color: #fff;
+      text-align: center;
+    }
+
+    .promo-section h3 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #222;
+    }
+
+    .promo-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .promo-card {
+      background-color: #fefefe;
+      border: 2px dashed #e67e22;
+      padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      overflow: hidden;
-      width: 250px;
+      width: 280px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
 
-    .card:hover {
-      transform: scale(1.05);
+    .promo-card:hover {
+      transform: translateY(-5px);
     }
 
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 15px;
-    }
-
-    .card-body h4 {
+    .promo-card h4 {
       margin: 0 0 10px;
+      color: #e67e22;
+      font-size: 20px;
     }
 
-    .card-body p {
+    .promo-card p {
       margin: 0;
-      font-weight: bold;
-      color: #e67e22;
+      color: #555;
+      font-size: 15px;
+    }
+
+    /* DARK MODE STYLES */
+    body.dark {
+      background-color: #121212;
+      color: #ddd;
+    }
+
+    body.dark header {
+      background-color: #111;
+    }
+
+    body.dark nav a {
+      color: #ccc;
+    }
+
+    body.dark .hero h2 {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    body.dark .dark-toggle {
+      background-color: #333;
+    }
+
+    body.dark .dark-toggle:hover {
+      background-color: #555;
+    }
+
+    body.dark .promo-section {
+      background-color: #1e1e1e;
+    }
+
+    body.dark .promo-section h3 {
+      color: #ffa500;
+    }
+
+    body.dark .promo-card {
+      background-color: #2a2a2a;
+      border-color: #ffa500;
+    }
+
+    body.dark .promo-card h4 {
+      color: #ffa500;
+    }
+
+    body.dark .promo-card p {
+      color: #ccc;
     }
   </style>
 </head>
@@ -119,46 +179,47 @@
   <header>
     <h1>BURGERIJ</h1>
     <nav>
-      <a href="#">MENU</a>
-      <a href="#">RESERVASI</a>
-      <a href="#">PEMESANAN</a>
+      <a href="/menu">MENU</a>
+      <a href="/riwayat_pesanan">RIWAYAT</a>
+      <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
     </nav>
   </header>
 
   <div class="hero">
-    <h2>Selamat Datang di BURGERIJ</h2>
+    <h2>Pesan Makanan Favoritmu!</h2>
+    <a href="/menu">Pesan Sekarang</a>
   </div>
 
-  <div class="kategori">
-    <button onclick="filterMenu('all')">Semua</button>
-    <button onclick="filterMenu('Makanan')">Makanan</button>
-    <button onclick="filterMenu('Minuman')">Minuman</button>
-  </div>
-
-  <div class="menu-grid">
-    {% for item in menu %}
-    <div class="card" data-tipe="{{ item.tipe }}">
-      <img src="{{ url_for('static', filename='images/' + item.gambar) }}" alt="{{ item.nama }}">
-      <div class="card-body">
-        <h4>{{ item.nama }}</h4>
-        <p>Rp {{ '{:,.0f}'.format(item.harga) }}</p>
+  <div class="promo-section">
+    <h3>🔥 Promo Spesial Hari Ini 🔥</h3>
+    <div class="promo-cards">
+      <div class="promo-card">
+        <h4>Diskon 20%</h4>
+        <p>Untuk pembelian pertama kamu. Gunakan kode: <strong>FIRST20</strong></p>
+      </div>
+      <div class="promo-card">
+        <h4>Gratis Minuman</h4>
+        <p>Dapatkan 1 minuman gratis untuk setiap pembelian menu combo burger</p>
+      </div>
+      <div class="promo-card">
+        <h4>Buy 1 Get 1 Free</h4>
+        <p>Setiap hari Rabu! Nikmati promo ganda untuk semua menu Chicken</p>
       </div>
     </div>
-    {% endfor %}
   </div>
 
   <script>
-    function filterMenu(tipe) {
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        if (tipe === 'all' || card.dataset.tipe === tipe) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
     }
-  </script>
 
+    // Load dark mode on startup
+    window.onload = function () {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+      }
+    };
+  </script>
 </body>
 </html>
