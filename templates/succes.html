@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pesanan Berhasil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .box h2 { color: green; }
+    .box a {
+      margin-top: 15px;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #333;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    .box a:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>🎉 Pesanan Berhasil!</h2>
+    <p>Menu: <strong>{{ pesanan.nama }}</strong></p>
+    <p>Jumlah: <strong>{{ pesanan.jumlah }}</strong></p>
+    <p>Total: <strong>Rp{{ pesanan.total }}</strong></p>
+    <a href="/">Kembali ke Menu</a>
+  </div>
+</body>
+</html>

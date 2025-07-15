@@ -1,0 +1,26 @@
+[
+  {
+    "nama": "Burger Keju",
+    "harga": 25000,
+    "tipe": "Makanan",
+    "gambar": "burger_keju.jpg"
+  },
+  {
+    "nama": "Es Teh Manis",
+    "harga": 8000,
+    "tipe": "Minuman",
+    "gambar": "esteh.jpg"
+  },
+  {
+    "nama": "Kentang Goreng",
+    "harga": 15000,
+    "tipe": "Makanan",
+    "gambar": "kentang_goreng.jpg"
+  },
+  {
+    "nama": "Milkshake Coklat",
+    "harga": 18000,
+    "tipe": "Minuman",
+    "gambar": "milkshake.jpg"
+  }
+]
